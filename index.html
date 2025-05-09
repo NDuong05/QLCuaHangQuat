@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- TOPMENU -->
+
+    <div id="find_wrap">
+        <div id="find">
+            <input type="text" id="findspace" class="searchInput" placeholder="Tìm kiếm sản phẩm...">
+            <button id="find-icon"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="finditem">
+                <h4>Thương hiệu</h4>
+                <input type="checkbox" name="thuonghieu" id="Asia"><label for="Asia">Asia</label> <br>
+                <input type="checkbox" name="thuonghieu" id="Senko"><label for="Senko">Senko</label> <br>
+                <input type="checkbox" name="thuonghieu" id="Panasonic"><label for="Panasonic">Panasonic</label><br>
+                <input type="checkbox" name="thuonghieu" id="Kangaroo"><label for="Kangaroo">Kangaroo</label><br>
+            </div>
+            <div class="finditem">
+                <h4>Loại Sản Phẩm</h4>
+                <input type="checkbox" name="loai" id="quatdung"><label for="quatdung">Quạt đứng</label> <br>
+                <input type="checkbox" name="loai" id="quatlung"><label for="quatlung">Quạt lửng</label> <br>
+                <input type="checkbox" name="loai" id="quattran"><label for="quattran">Quạt trần</label> <br>
+                <input type="checkbox" name="loai" id="quattreotuong"><label for="quattreotuong">Quạt treo
+                    tường</label><br>
+            </div>
+            <div class="finditem">
+                <h4>Theo Giá Sản Phẩm</h4>
+                <input type="text" id="minprice" class="searchInput" placeholder="Giá tối thiểu"
+                    oninput="dinhdangso(this)">
+                <input type="text" id="maxprice" class="searchInput" placeholder="Nhập giá tối đa"
+                    oninput="dinhdangso(this)">
+                <div id="reset">
+                    <button id="reset-button" onclick="resetFilter();">Đặt lại</button>
+                </div>
+            </div>
+        </div>
+        <!-- Inform product not found -->
+    </div>
+    <div id="toast">
+        <div style="text-align: center; font-size: 20px; margin-top: 10px; font-weight: 700;">Thông báo</div>
+        <div id="toast-msg" style="margin-top: 20px; text-align: center;"></div>
+    </div>
+    <div id="bar_wrap">
+        <div id="bar">
+            <div id="bar_text">
+                MENU
+            </div>
+            <div id="bar_list">
+                <ul>
+                    <li>Trang Chủ</li>
+                    <li>Liên Hệ</li>
+                    <li>Cửa Hàng</li>
+                    <li>Giới Thiệu</li>
+                    <li>Lịch Sử Đặt Hàng</li>
+                </ul>
+            </div>
+            <div id="bar_bottom">
+                Liên Hệ: 0987654321
+            </div>
+        </div>
+    </div>
+    <!-- <div id="order_history">
+        <h1>Lịch sử đặt hàng</h1>
+        <table id="order-history-table">
+            <thead>
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th>Địa chỉ nhận hàng</th>
+                    <th>Trạng thái</th>
+                </tr>
+                <tbody id="orders-table-body">
+                   
+                </tbody>
+            </thead>
+    </div>  -->
+
+    <div id="topmenu">
+        <div id="topmenu_text" onclick="window.location.href='index.html'">
+            ONLY.FANS
+        </div>
+        <div id="topmenu_list">
+            <div id="topmenu_list_item">
+                <div onclick="window.location.href='index.html'">Trang Chủ</div>
+                <div>Liên Hệ</div>
+                <div>Cửa Hàng</div>
+                <div>Giới Thiệu</div>
+                <div>Lịch Sử Đặt Hàng</div>
+            </div>
+        </div>
+        <div id="topmenu_icon">
+            <div id="topmenu_icon--bar"><i class="fa-solid fa-bars-staggered" onclick="hien('bar_wrap');"></i></div>
+            <div id="topmenu_icon--gear"><i class="fa-solid fa-gear"></i></div>
+            <div id="topmenu_icon--user"><i class="fa-regular fa-user"></i></div>
+            <div id="topmenu_icon--find"><i class="fa-solid fa-magnifying-glass" onclick="hien('find_wrap');"></i></div>
+            <div id="topmenu_icon--bag">
+                <i class="fa-solid fa-bag-shopping" onclick="window.location.href='cart.html'"></i>
+                <p id="item-quantity"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="banner">
+        <img src="hinhanh/banner/img1.jpg" />
+        <img src="hinhanh/banner/image2.jpg" />
+        <img src="hinhanh/banner/image3.jpg" />
+    </div>
+    <div id="under-content">
+        <div id="content">
+            <div id="container-items"></div>
+            <div id="pagenum"></div>
+        </div>
+    </div>
+
+    <!-- product detail table -->
+    <div id="display-detail-table">
+        <div id="info-product">
+            <button class="btn-exit">X</button>
+            <div id="left-info"></div>
+            <div id="right-info"></div>
+        </div>
+    </div>
+
+    <!-- BRAND DETAIL TABLE -->
+    <div id="wrapBrandInfo">
+        <div id="brandInfo"></div>
+    </div>
+
+    <div id="information">
+        <h2>Nhận thông tin khuyến mãi mới nhất</h2>
+        <p>Để lại email của bạn để nhận những thông tin khuyến mãi mới nhất từ chúng tôi</p>
+        <div id="input-information">
+            <input type="email" name="email-info" id="email-info" placeholder="Email của bạn">
+            <button onclick="checkEmailkhuyenmai()" id="emailkhuyenmai">
+                <i class="fa-solid fa-arrow-right" style="color: white;"></i>
+            </button>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer-container">
+            <div class="footer-item">
+                <img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="">
+            </div>
+            <div class="footer-item">
+                <h4>Thông tin hữu ích</h4>
+                <a href="">Kiểm tra size quạt</a>
+                <br>
+                <a href="">Hướng dẫn bảo hành</a>
+                <br>
+                <a href="">Quy định đổi quạt</a>
+            </div>
+            <div class="footer-item">
+                <h4>Giới thiệu</h4>
+                <a href="">Quan niệm về quạt</a>
+                <br>
+                <a href="">Danh sách cửa hàng</a>
+                <br>
+                <a href="">Dành cho đại lý</a>
+            </div>
+            <div class="footer-item">
+                <h4>Thông tin liên hệ</h4>
+                <p>Địa chỉ: 273 An Dương Vương, P3, Quận 5, TP.HCM</p>
+                <p>Số điện thoại: 0912345JQK</p>
+            </div>
+        </div>
+    </div>
+    <script src="cart.js"></script>
+    <script>
+        const images = document.querySelectorAll('.banner img');
+        let currentIndex = 0;
+
+        function showImage(index) {
+            if (index >= 0 && index < images.length) {
+                images.forEach(img => img.style.display = 'none');// Ẩn tất cả hình ảnh    
+                images[index].style.display = 'block'; // Hiển thị hình ảnh theo chỉ số hiện tại
+            }
+        }
+        function startAnimation() {
+            showImage(currentIndex);
+
+            // Cứ mỗi 4 giây sẽ chuyển sang hình ảnh tiếp theo
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % images.length; // Chuyển chỉ số, quay lại đầu nếu hết ảnh
+                showImage(currentIndex);
+            }, 4000); // 4 giây
+        }
+
+        //product-detail-table
+
+        function changeColorBtn1(button) {
+            button.style.backgroundColor = "#0d5145";
+            button.style.color = 'white';
+        }
+
+        function changeColorBtn2(button) {
+            button.style.backgroundColor = "white";
+            button.style.color = 'black';
+        }
+
+        function setupQuantity() {
+            const plus = document.querySelector(".plus");
+            const minus = document.querySelector(".minus");
+            const num = document.querySelector(".num");
+            if (num && plus && minus) {
+                plus.addEventListener("click", () => {
+                    num.value = parseInt(num.value, 10) + 1;
+                });
+                minus.addEventListener("click", () => {
+                    if (parseInt(num.value, 10) > 1) {
+                        num.value = parseInt(num.value, 10) - 1;
+                    }
+                });
+                plus.addEventListener("mousedown", function () {
+                    changeColorBtn1(this);
+                });
+                plus.addEventListener("mouseup", function () {
+                    changeColorBtn2(this);
+                });
+                minus.addEventListener("mousedown", function () {
+                    changeColorBtn1(this);
+                });
+                minus.addEventListener("mouseup", function () {
+                    changeColorBtn2(this);
+                });
+            }
+        }
+        const productList = JSON.parse(localStorage.getItem("productList"));
+        console.log(productList);
+
+        function showDetailedInformation(productid, imgSrc, productName, productPower, productSize, brandId, madeIn, year, productPrice) {
+            let leftInfo = document.getElementById("left-info");
+            let rightInfo = document.getElementById("right-info");
+            leftInfo.innerHTML = `<img src="${imgSrc}" />`;
+            let s = `
+                <p style="display: none;" id="product-id">${productid}</p>
+                <h2>${productName}</h2>
+                <p><b>Công suất: </b> ${productPower}</p>
+                <p><b>Kích thước: </b>${productSize}</p>       
+                <p><b>Xuất xứ:</b> ${madeIn}</p>
+                <p><b>Năm ra mắt:</b> ${year}</p>              
+                <p><b>Giá: </b>${productPrice.toLocaleString()} VNĐ</p>          
+                <p><b>Bảo hành: </b> 12 tháng</p>
+                <p><b>Hãng: </b>${brandId}. <span id="brandInfoSpan">Xem thông tin hãng</span></p>
+                <p><b>Số lượng</b></p>
+                <div class="count-box">
+                    <button class="minus">-</button>
+                    <input type="text" class="num">
+                    <button class="plus" >+</button>
+                </div>
+                <button class="add-to-cart">Thêm vào giỏ</button>
+                `;
+            rightInfo.innerHTML = s;
+
+            setupQuantity();
+            showDetailedBrandInfo(productName, brandInfoList);
+        }
+        var brandArray = [
+            {
+                brandid: 'Panasonic',
+                brandintro: '<br>- Thương hiệu Nhật Bản.<br>- Thành lập năm 1918.<br>- Panasonic nổi tiếng với các sản phẩm tủ lạnh, máy lạnh, tivi và các thiết bị gia dụng như lò vi sóng, quạt, máy xay sinh tố,...<br>- Các sản phẩm Panasonic nổi tiếng với độ bền cao, tiết kiệm điện, mẫu mã đẹp.'
+            },
+            {
+                brandid: 'Asia',
+                brandintro: '<br>- Thương hiệu Việt Nam.<br>- Thành lập 1990.<br>- Được vinh danh nằm trong top 20 "Nhãn hiệu hàng đầu Việt Nam - Sản phẩm vàng, Dịch vụ vàng Việt Nam năm 2017".<br>- Được biết đến các sản phẩm quạt điện, quạt sưởi chất lượng, giá thành phù hợp với đại đa số người tiêu dùng Việt.'
+            },
+            {
+                brandid: 'Senko',
+                brandintro: '<br>- Thương hiệu Việt Nam.<br>- Thành lập năm 1998.<br>- Với sứ mệnh "Làm mát cho cuộc sống" quạt điện SENKO đáp ứng mọi nhu cầu của khách hàng và là sự lựa chọn hoàn hảo của mọi nhà về quạt bàn, quạt treo, quạt lửng, quạt đứng, quạt trần,...<br>- Chất lượng cao, mẫu mã đẹp, tiết kiệm năng lượng là những tiêu chí cốt lõi trong mỗi sản phẩm của quạt điện Senko.'
+            },
+            {
+                brandid: 'Kangaroo',
+                brandintro: '<br>- Thương hiệu Việt Nam.<br>- Thành lập 2003. Các sản phẩm Kangaroo hướng đến phục vụ sức khỏe và tiện nghi cuộc sống như máy lọc nước, hàng gia dụng - nhà bếp và các thiết bị điện tiêu dùng khác.<br>- "Không đối đầu mà luôn đi trước đón đầu" là tiêu chí trong hoạt động sản xuất và kinh doanh của Kangaroo.'
+            },
+        ];
+
+        const brandInfoList = JSON.parse(localStorage.getItem("brandInfo"));
+        console.log(brandInfoList);
+        function showDetailedBrandInfo(name, brandArr) {
+            let brandInfo = document.getElementById("brandInfo");
+            let brandInfoSpan = document.getElementById("brandInfoSpan");
+            let wrapBrandInfo = document.getElementById("wrapBrandInfo");
+            brandInfoSpan.addEventListener("click", function () {
+                wrapBrandInfo.style.display = 'block';
+                wrapBrandInfo.style.backdropFilter = 'blur(7px)';
+            });
+            let s = "";
+            s += `<button class="btn-exit">x</button>`;
+            for (let i = 0; i < brandArr.length; i++) {
+                if (name.indexOf(brandArr[i].brandid) != -1) {
+                    s = '<span>' + brandArr[i].brandid + '</span>' + s + brandArr[i].brandintro;
+                    break;
+                }
+            }
+            brandInfo.innerHTML = s;
+            Exit(1, wrapBrandInfo);
+        }
+
+        function detailedProductInformation(name, Array) {
+            let id, imgSrc, productName, productPower, productSize, brandId, madeIn, year, productPrice;
+            for (let i = 0; i < Array.length; i++) {
+                if (name.indexOf(Array[i].productid) != -1) {
+                    id = Array[i].productid
+                    imgSrc = Array[i].img;
+                    productName = Array[i].name;
+                    productPower = Array[i].power;
+                    productSize = Array[i].size;
+                    madeIn = Array[i].madein;
+                    year = Array[i].year;
+                    brandId = Array[i].brandid;
+                    productPrice = Array[i].price;
+                    break;
+                }
+            }
+            showDetailedInformation(id, imgSrc, productName, productPower, productSize, brandId, madeIn, year, productPrice);
+        }
+
+        const displayTableDetail = document.getElementById("display-detail-table");
+        function displayProductDetailTable() {
+            const detailButtons = document.querySelectorAll('.detail');
+            detailButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const productName = button.parentElement.querySelector(".wrap-product-content p").textContent;
+                    detailedProductInformation(productName, productList);
+                    document.querySelector(".num").value = 1;
+                    displayTableDetail.style.display = 'block';
+                    displayTableDetail.style.backgroundColor = 'rgb(0, 0, 0, 0.4)';
+
+                    addToCart();
+                    Exit(0, displayTableDetail);
+                });
+            });
+        }
+
+
+
+        function Exit(x, element) {
+            const btnExit = document.getElementsByClassName("btn-exit")[x];
+            const addCart = document.getElementsByClassName('add-to-cart')[x];
+            // console.log(btnExit);
+            btnExit.addEventListener("click", function () {
+                console.log(element);
+
+                element.style.display = 'none';
+            });
+
+            if (addCart) addCart.addEventListener("click", function () {
+
+                document.getElementById('info-product').classList.add('hide');
+                element.classList.add('hide');
+                setTimeout(() => {
+                    element.style.display = 'none';
+                    element.classList.remove('hide');
+                    document.getElementById('info-product').classList.remove('hide');
+                }, 1500);
+            });
+
+            // Hide product detail table when clicking outside the table
+            element.addEventListener("click", function (event) {
+                //Ensures that only clicks on the displayTableDetail background(not its children)will trigger the hiding behavior.
+                if (event.target == this) {
+                    this.style.display = 'none';
+                }
+            });
+        }
+        // var productArray = [
+
+        //     {
+        //         productid: 'D16027-TV0', brandid: 'Asia', img: 'hinhanh/quatdien/fan18-1.jpg', name: 'Quạt đứng Asia D16027-TV0',
+        //         size: 'Ngang 42cm - Cao 93 - 130cm - Sâu 42cm', power: '45W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2021', price: 1099000
+        //     },
+
+        //     {
+        //         productid: 'VY538990', brandid: 'Asia', img: 'hinhanh/quatdien/fan21-1.jpg', name: 'Quạt lửng Asia VY538990',
+        //         size: 'Ngang 39cm - Cao 78.2 - 97.2cm - Sâu 39cm', power: '55W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 460000
+        //     },
+
+        //     {
+        //         productid: 'DH1600', brandid: 'Senko', img: 'hinhanh/quatdien/fan1.jpg', name: 'Quạt đứng Senko DH1600',
+        //         size: 'Ngang 37.5cm - Cao 109 - 123cm - Sâu 41cm', power: '47W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 559000
+        //     },
+
+        //     {
+        //         productid: 'F-60XDN', brandid: 'Panasonic', img: 'hinhanh/quattran/fan1-1.jpg', name: 'Quạt trần Panasonic F-60XDN',
+        //         size: 'Ngang 150cm - Cao 28.8cm - Sâu 150cm', power: '37W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2019', price: 7390000
+        //     },
+
+        //     {
+        //         productid: 'F-48DGL', brandid: 'Panasonic', img: 'hinhanh/quattran/fan2-1.jpg', name: 'Quạt trần Panasonic F-48DGL',
+        //         size: 'Ngang 120cm - Cao 27.8cm - Sâu 120cm', power: '31W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2021', price: 1590000
+        //     },
+
+        //     {
+        //         productid: 'VY628890', brandid: 'Asia ', img: 'hinhanh/quatdien/fan2.jpg', name: 'Quạt lửng Asia VY628890',
+        //         size: 'Ngang 45cm - Cao 80 - 98cm - Sâu 45cm', power: '75W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2024', price: 510000
+        //     },
+
+        //     {
+        //         productid: 'VY539790', brandid: 'Asia', img: 'hinhanh/quatdien/fan14-1.jpg', name: 'Quạt đứng Asia VY539790',
+        //         size: 'Ngang 46.5cm - Cao 110 - 139cm - Sâu 46.5cm', power: '55W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 650000
+        //     },
+
+        //     {
+        //         productid: 'VY619990', brandid: 'Asia', img: 'hinhanh/quatdien/fan15-1.jpg', name: 'Quạt đứng Asia VY619990',
+        //         size: 'Ngang 50cm - Cao 101 - 121cm - Sâu 50cm', power: '55W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2023', price: 599000
+        //     },
+
+        //     {
+        //         productid: 'F-56MPG-S', brandid: 'Panasonic', img: 'hinhanh/quattran/fan3-1.jpg', name: 'Quạt trần Panasonic F-56MPG-S',
+        //         size: 'Ngang 140cm - Cao 31.9cm - Sâu 140cm', power: '59W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2022', price: 3180000
+        //     },
+
+        //     {
+        //         productid: 'VY639990', brandid: 'Asia', img: 'hinhanh/quatdien/fan3.jpg', name: 'Quạt đứng Asia VY639990',
+        //         size: 'Ngang 52cm - Cao 100.5 - 119cm - Sâu 52cm', power: '80W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 790000
+        //     },
+
+        //     {
+        //         productid: 'TC1622', brandid: 'Senko', img: 'hinhanh/quatdien/fan4.jpg', name: 'Quạt treo tường Senko TC1622',
+        //         size: 'Ngang 45cm - Cao 47cm - Sâu 29cm', power: '65W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2017', price: 540000
+        //     },
+
+        //     {
+        //         productid: 'VY449690', brandid: 'Asia', img: 'hinhanh/quatdien/fan16-1.jpg', name: 'Quạt đứng Asia VY449690',
+        //         size: 'Ngang 44.5cm - Cao 95 - 130cm - Sâu 44.5cm', power: '55W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 790000
+        //     },
+
+        //     {
+        //         productid: 'VY358990', brandid: 'Asia', img: 'hinhanh/quatdien/fan23-1.jpg', name: 'Quạt lửng Asia VY358990',
+        //         size: 'Ngang 48.5cm - Cao 72 - 86cm - Sâu 48.5cm', power: '55W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 580000
+        //     },
+
+        //     {
+        //         productid: 'DR1608', brandid: 'Senko', img: 'hinhanh/quatdien/fan24-1.jpg', name: 'Quạt đứng Senko DR1608',
+        //         size: 'Ngang 39cm - Cao 117 - 129cm - Sâu 39cm', power: '65W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2018', price: 990000
+        //     },
+
+        //     {
+        //         productid: 'A16019-XV0', brandid: 'Asia', img: 'hinhanh/quatdien/fan22-1.jpg', name: 'Quạt lửng Asia A16019-XV0',
+        //         size: 'Ngang 36cm - Cao 72 - 92cm - Sâu 36cm', power: '55W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 590000
+        //     },
+
+        //     {
+        //         productid: 'KG726', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan31-1.jpg', name: 'Quạt đứng Kangaroo KG726',
+        //         size: 'Ngang 37.6cm - Cao 95 - 126cm - Sâu 38cm', power: '45W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2022', price: 1154000
+        //     },
+
+        //     {
+        //         productid: 'F-80ZBR', brandid: 'Panasonic', img: 'hinhanh/quattran/fan13-1.jpg', name: 'Quạt trần Panasonic F-80ZBR',
+        //         size: 'Ngang 200cm - Cao 40cm - Sâu 200cm', power: '57W ', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2019', price: 17390000
+        //     },
+
+        //     {
+        //         productid: 'D16026-XV0', brandid: 'Asia', img: 'hinhanh/quatdien/fan17-1.jpg', name: 'Quạt đứng Asia D16026-XV0',
+        //         size: 'Ngang 38.5cm - Cao 104 - 119cm - Sâu 39.5cm', power: '56W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2021', price: 890000
+        //     },
+
+        //     {
+        //         productid: 'F-60TAN', brandid: 'Panasonic', img: 'hinhanh/quattran/fan4-1.jpg', name: 'Quạt trần Panasonic F-60TAN ',
+        //         size: 'Ngang 150cm - Cao 28.8cm - Sâu 150cm', power: '37W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2016', price: 8500000
+        //     },
+
+        //     {
+        //         productid: 'TR1628', brandid: 'Senko', img: 'hinhanh/quatdien/fan27-1.jpg', name: 'Quạt treo tường Senko TR1628',
+        //         size: 'Ngang 44.3cm - Cao 63cm - Sâu 36.5cm', power: '47W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 550000
+        //     },
+
+        //     {
+        //         productid: 'KG729', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan32-1.jpg', name: 'Quạt đứng Kangaroo DC inverter KG729',
+        //         size: 'Ngang 38cm - Cao 114 - 123.5cm - Sâu 38cm', power: '33W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2022', price: 3600000
+        //     },
+
+        //     {
+        //         productid: 'F-60FEN', brandid: 'Panasonic', img: 'hinhanh/quattran/fan12-1.jpg', name: 'Quạt trần Panasonic F-60FEN',
+        //         size: 'Ngang 150cm - Cao 28.8cm - Sâu 150cm', power: '40W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2024', price: 9990000
+        //     },
+
+        //     {
+        //         productid: 'TC1626', brandid: 'Senko', img: 'hinhanh/quatdien/fan28-1.jpg', name: 'Quạt treo tường Senko TC1626',
+        //         size: 'Ngang 44.5cm - Cao 54.5cm - Sâu 33.5cm', power: '47W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2017', price: 425000
+        //     },
+
+        //     {
+        //         productid: 'F-60MZ2', brandid: 'Panasonic', img: 'hinhanh/quattran/fan5-1.jpg', name: 'Quạt trần Panasonic F-60MZ2',
+        //         size: 'Ngang 150cm - Cao 45.7cm - Sâu 150cm', power: '66W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2015', price: 1180000
+        //     },
+
+        //     {
+        //         productid: 'F-56MPG-GO', brandid: 'Panasonic', img: 'hinhanh/quattran/fan6-1.jpg', name: 'Quạt trần Panasonic F-56MPG-GO',
+        //         size: 'Ngang 140cm - Cao 31.9cm - Sâu 140cm', power: '59W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2020', price: 2990000
+        //     },
+
+        //     {
+        //         productid: 'VY377790', brandid: 'Asia', img: 'hinhanh/quatdien/fan5.jpg', name: 'Quạt treo tường Asia VY377790',
+        //         size: 'Ngang 47cm - Cao 69cm - Sâu 36.5cm', power: '55W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 720000
+        //     },
+
+        //     {
+        //         productid: 'B1612', brandid: 'Senko', img: 'hinhanh/quatdien/fan6.jpg', name: 'Quạt bàn Senko B1612',
+        //         size: 'Ngang 32cm - Cao 65.5cm - Sâu 32cm', power: '47W', category: 'quatban',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 425000
+        //     },
+
+        //     {
+        //         productid: 'KG725', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan33-1.jpg', name: 'Quạt đứng Kangaroo KG725',
+        //         size: 'Ngang 40cm - Cao 113.5 - 135cm - Sâu 40cm', power: '55W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2022', price: 1190000
+        //     },
+
+        //     {
+        //         productid: 'F-56NCL-S', brandid: 'Panasonic', img: 'hinhanh/quattran/fan11-1.jpg', name: 'Quạt trần Panasonic F-56NCL-S',
+        //         size: 'Ngang 150cm - Cao 30.4cm - Sâu 150cm', power: '70W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2021', price: 2100000
+        //     },
+
+        //     {
+        //         productid: 'L1638', brandid: 'Senko', img: 'hinhanh/quatdien/fan7.jpg', name: 'Quạt lửng Senko L1638',
+        //         size: 'Ngang 36.8cm - Cao 75.6 - 91.5cm - Sâu 36cm', power: '47W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2021', price: 470000
+        //     },
+
+        //     {
+        //         productid: 'DTS1609', brandid: 'Senko', img: 'hinhanh/quatdien/fan25-1.jpg', name: 'Quạt đứng Senko DTS1609',
+        //         size: 'Ngang 46.5cm - Cao 106.3 - 117.5cm - Sâu 46.5cm', power: '60W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2021', price: 645000
+        //     },
+
+        //     {
+        //         productid: 'KG723', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan30-1.jpg', name: 'Quạt treo tường Kangaroo KG723',
+        //         size: 'Ngang 41cm - Cao 53cm - Sâu 30cm', power: '55W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2022', price: 499000
+        //     },
+
+        //     {
+        //         productid: 'LTS1632', brandid: 'Senko', img: 'hinhanh/quatdien/fan26-1.jpg', name: 'Quạt lửng Senko LTS1632',
+        //         size: 'Ngang 41.5cm - Cao 86 - 98cm - Sâu 41.5cm', power: '60W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2021', price: 620000
+        //     },
+
+        //     {
+        //         productid: 'T1680', brandid: 'Senko', img: 'hinhanh/quatdien/fan29-1.jpg', name: 'Quạt treo tường Senko T1680',
+        //         size: 'Ngang 44.5cm - Cao 59cm - Sâu 33.5cm', power: '47W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 349000
+        //     },
+
+        //     {
+        //         productid: 'LTS1636', brandid: 'Senko', img: 'hinhanh/quatdien/fan8.jpg', name: 'Quạt lửng Senko LTS1636',
+        //         size: 'Ngang 41cm - Cao 85 - 97cm - Sâu 41cm', power: '65W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2017', price: 560000
+        //     },
+
+        //     {
+        //         productid: 'VY357690', brandid: 'Asia', img: 'hinhanh/quatdien/fan9.jpg', name: 'Quạt treo tường Asia VY357690',
+        //         size: 'Ngang 44.7cm - Cao 54.5cm - Sâu 33.8cm', power: '55W', category: 'quattreotuong',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 550000
+        //     },
+
+        //     {
+        //         productid: 'KGSF056051', brandid: 'Kangaroo', img: 'hinhanh/quattran/fan7-1.jpg', name: ' Quạt trần Kangaroo KGSF056051',
+        //         size: 'Ngang 140cm - Cao 40.8cm - Sâu 140cm', power: '56W', category: 'quattran',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2021', price: 2290000
+        //     },
+
+        //     {
+        //         productid: 'D16018-BV0', brandid: 'Asia', img: 'hinhanh/quatdien/fan19-1.jpg', name: 'Quạt đứng Asia D16018-BV0',
+        //         size: 'Ngang 38.5cm - Cao 96.5 - 109cm - Sâu 41.5cm', power: '45W', category: 'quatdung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2017', price: 650000
+        //     },
+
+        //     {
+        //         productid: 'A16009-DV1', brandid: 'Asia', img: 'hinhanh/quatdien/fan20-1.jpg', name: 'Quạt lửng Asia A16009-DV1',
+        //         size: 'Ngang 44cm - Cao 76.5 - 94.5cm - Sâu 44cm', power: '45W', category: 'quatlung',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2018', price: 590000
+        //     },
+
+        //     {
+        //         productid: 'F-56XPG-W', brandid: 'Panasonic', img: 'hinhanh/quattran/fan8-1.jpg', name: 'Quạt trần Panasonic F-56XPG-W',
+        //         size: 'Ngang 140cm - Cao 29.2cm - Sâu 140cm', power: '59W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2019', price: 3500000
+        //     },
+
+        //     {
+        //         productid: 'VY355790', brandid: 'Asia', img: 'hinhanh/quatdien/fan10.jpg', name: 'Quạt bàn Asia VY355790',
+        //         size: 'Ngang 29cm - Cao 60cm - Sâu 33cm', power: '55W', category: 'quatban',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2022', price: 550000
+        //     },
+
+        //     {
+        //         productid: 'B1213', brandid: 'Senko', img: 'hinhanh/quatdien/fan11.jpg', name: 'Quạt bàn Senko B1213',
+        //         size: 'Ngang 26.5cm - Cao 54cm - Sâu 27.5cm', power: '40W', category: 'quatban',
+        //         brandOf: 'Việt Nam', madein: 'Việt Nam', year: '2019', price: 379000
+        //     },
+
+        //     {
+        //         productid: 'KG748', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan12.jpg', name: 'Quạt sạc điện Kangaroo KG748',
+        //         size: 'Ngang 36cm - Cao 74 - 88.2cm - Sâu 36cm', power: '24W', category: 'quatsacdien',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2024', price: 2090000
+        //     },
+
+        //     {
+        //         productid: 'KG745', brandid: 'Kangaroo', img: 'hinhanh/quatdien/fan13-1.jpg', name: 'Quạt sạc điện Kangaroo KG745',
+        //         size: 'Ngang 24.6cm - Cao 60cm - Sâu 24.6cm', power: '24W', category: 'quatsacdien',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2024', price: 1250000
+        //     },
+
+        //     {
+        //         productid: 'KG722DC', brandid: 'Kangaroo', img: 'hinhanh/quattran/fan9-1.jpg', name: 'Quạt trần Kangaroo KG722DC',
+        //         size: 'Ngang 142cm - Cao 42cm - Sâu 142cm', power: '50W', category: 'quattran',
+        //         brandOf: 'Việt Nam', madein: 'Trung Quốc', year: '2022', price: 2990000
+        //     },
+
+        //     {
+        //         productid: 'F-60WWK-S', brandid: 'Panasonic', img: 'hinhanh/quattran/fan10-1.jpg', name: 'Quạt trần Panasonic F-60WWK-S',
+        //         size: 'Ngang 150cm - Cao 19.6cm - Sâu 150cm', power: '76W', category: 'quattran',
+        //         brandOf: 'Nhật Bản', madein: 'Malaysia', year: '2019', price: 6390000
+        //     },
+        // ];
+
+        // console.log(productArray.length);
+        function setUpData() {
+            localStorage.setItem('productList', JSON.stringify(productArray));
+            localStorage.setItem('brandInfo', JSON.stringify(brandArray));
+        }
+        // Highlight the page button current
+        function pageNumCurrent() {
+            const buttons = document.querySelectorAll(".pagenum-button");
+            // Set the first button as active by default
+            if (buttons.length > 0) {
+                buttons[0].classList.add("active");
+            }
+            //Sử dụng classList.add để thêm thuộc tính vào class pagenum-button
+            //Sử dụng setAttribute sẽ phức tạp hơn do thêm class cũ và cả class mới  muốn thêm vào
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Remove 'active' class from all buttons
+                    buttons.forEach(btn => btn.classList.remove("active"));
+
+                    // Add 'active' class to the clicked button
+                    button.classList.add("active");
+                });
+            });
+        }
+
+        //Pagination
+        let itemsPerPage = 12;
+        let currentPage = 1;
+        function pageContent(pagenum, Array, numOfProducts) {
+            const containerItems = document.getElementById("container-items");
+            // containerItems.innerHTML = "";
+            const startIndex = (pagenum - 1) * numOfProducts;
+            const endIndex = startIndex + numOfProducts;
+
+            let s = "";
+            for (let i = startIndex; i < endIndex && i < Array.length; i++) {
+                s +=
+                    `<div class="item">
+                <img src="${Array[i].img}">
+                <div class="wrap-product-content">
+                    <p>${Array[i].name}</p>
+                    <p>${(Array[i].price).toLocaleString()} VNĐ</p>
+                </div>
+                <button class="detail">Chi tiết</button>
+            </div>`;
+            }
+            containerItems.innerHTML = s;
+            displayProductDetailTable();
+        }
+        function pageUp() {
+            window.scrollTo({
+                top: 0,
+                // value of behavior: smooth instant auto
+                behavior: "smooth" // Adds a smooth scrolling effect
+            });
+        }
+        function phantrang(Array, numOfProducts) {
+            const pageNumContainer = document.getElementById("pagenum");
+            // const containerItems = document.getElementById("container-items");
+            // containerItems.innerHTML = "";
+            pageNumContainer.innerHTML = ""; // remove all buttons currently
+            // round Returns x rounded to its nearest integer
+            // ceil Returns x rounded up to its nearest integer
+            let totalPages = Math.ceil(Array.length / numOfProducts);
+            // console.log(totalPages);
+            pageContent(1, Array, numOfProducts);
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement("button");
+                button.setAttribute("class", "pagenum-button");
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    currentPage = i;
+                    pageContent(currentPage, Array, numOfProducts);
+                    pageUp();
+                });
+                pageNumContainer.appendChild(button);
+            }
+            pageNumCurrent();
+        }
+
+        document.getElementById('find-icon').addEventListener('mousedown', function (event) {
+            var element = document.getElementById('find-icon');
+
+            if (element.contains(event.target)) {
+                const find = document.getElementById('findspace').value.trim();
+                let minprice = document.getElementById('minprice').value;
+                let maxprice = document.getElementById('maxprice').value;
+
+                if (minprice == '') minprice = 0;
+                if (maxprice == '') maxprice = Infinity;
+
+
+                minprice = Number(minprice.toString().replace(/\./g, ''));
+                maxprice = Number(maxprice.toString().replace(/\./g, ''));
+
+                const selectedCategories = Array.from(document.querySelectorAll('input[name="loai"]:checked')).map(checkbox => checkbox.id);
+                const selectedBrands = Array.from(document.querySelectorAll('input[name="thuonghieu"]:checked')).map(checkbox => checkbox.id);
+
+                if (minprice <= maxprice) {
+                    findItem(find, minprice, maxprice, selectedCategories, selectedBrands);
+                }
+                else {
+                    displayToast('Vui lòng nhập giá trị hợp lệ.');
+                    console.log('Vui lòng nhập đúng từ khóa và giá trị hợp lệ.');
+                }
+            }
+        });
+
+        const listProduct = 'productList';
+
+        const findData = localStorage.getItem(listProduct);
+        function findItem(find, minprice, maxprice, selectedCategories, selectedBrands) {
+            if (findData) {
+
+                const products = JSON.parse(findData);
+                const result = products.filter(product =>
+                    product.name.toLowerCase().includes(find.toLowerCase()) &&
+                    product.price <= maxprice &&
+                    product.price >= minprice &&
+                    (selectedCategories.length === 0 || selectedCategories.includes(product.category)) &&
+                    (selectedBrands.length === 0 || selectedBrands.includes(product.brandid))
+                );
+                // console.log(result);
+                if (result.length === productList.length) {
+                    phantrang(productList, itemsPerPage);
+                }
+                else if (result.length > 0) {
+                    phantrang(result, 8);
+                }
+                else {
+                    displayToast('Không tìm thấy sản phẩm!');
+                }
+            }
+            else {
+                console.log('Không có dữ liệu trong localStorage.');
+            }
+        }
+        const findInput = ['findspace', 'maxprice', 'minprice', 'quatlung', 'quattreotuong', 'quatdung', 'quattran', 'Asia', 'Senko', 'Panasonic', 'Kangaroo'];
+        findInput.forEach(id => {
+            document.getElementById(id).addEventListener('keypress', function (event) {
+                if (event.key == 'Enter') {
+                    const find = document.getElementById('findspace').value.trim();
+                    let minprice = document.getElementById('minprice').value;
+                    let maxprice = document.getElementById('maxprice').value;
+
+                    if (minprice == '') minprice = 0;
+                    if (maxprice == '') maxprice = Infinity;
+
+
+                    minprice = Number(minprice.toString().replace(/\./g, ''));
+                    maxprice = Number(maxprice.toString().replace(/\./g, ''));
+
+                    const selectedCategories = Array.from(document.querySelectorAll('input[name="loai"]:checked')).map(checkbox => checkbox.id);
+                    const selectedBrands = Array.from(document.querySelectorAll('input[name="thuonghieu"]:checked')).map(checkbox => checkbox.id);
+
+                    if (minprice <= maxprice) {
+                        findItem(find, minprice, maxprice, selectedCategories, selectedBrands);
+                    }
+                    else {
+                        displayToast('Vui lòng nhập giá trị hợp lệ.');
+                        console.log('Vui lòng nhập đúng từ khóa và giá trị hợp lệ.');
+                    }
+                }
+            });
+        });
+        function dinhdangso(inputElement) {
+            // Lấy giá trị hiện tại và loại bỏ các ký tự không phải số
+            let value = inputElement.value.replace(/[^0-9]/g, '');
+            value = reverseNumber(value);
+            // Chia giá trị thành các nhóm 4 số và nối bằng dấu ' - '
+            let formattedValue = value.match(/.{1,3}/g)?.join('.') || '';
+
+            // Gán giá trị định dạng lại vào input
+            inputElement.value = reverseNumber(formattedValue).toString();
+        }
+        function reverseNumber(num) {
+            const reversed = num.toString().split('').reverse().join('');
+            // return Math.sign(num) * parseInt(reversed);
+            return reversed;
+        }
+
+        //Button reset filter
+        function resetFilter() {
+            const searchInput = document.querySelectorAll(".searchInput");
+            const chkboxs = document.querySelectorAll("input[type = checkbox]");
+            searchInput.forEach(input => input.value = '');
+            chkboxs.forEach(chkbox => chkbox.checked = false);
+            phantrang(productList, itemsPerPage);
+        }
+        function updateQuantity() {
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalQuantity = 0;
+            cartItems.forEach(item => {
+                totalQuantity += Number(item.quantity);
+            });
+
+            if (totalQuantity != 0) {
+                if (totalQuantity > 9) totalQuantity = '9+'
+                document.getElementById('item-quantity').style.display = 'block';
+                document.getElementById('item-quantity').innerText = totalQuantity;
+            }
+            else
+                document.getElementById('item-quantity').style.display = 'none';
+        }
+
+        function addToCart() {
+            let node = document.getElementById('info-product');
+            let btn = document.querySelector('.add-to-cart');
+            btn.addEventListener('click', function () {
+                const item = {
+                    id: node.querySelector('#right-info').firstElementChild.innerHTML,
+                    quantity: node.querySelector('#right-info').querySelector('.count-box').querySelector('.num').value
+                }
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                let flag = false;
+                cart.forEach(cartItems => {
+                    if (cartItems.id == item.id) {
+                        cartItems.quantity = Number(cartItems.quantity);
+                        cartItems.quantity += Number(item.quantity);
+                        flag = true;
+                    }
+                })
+                if (!flag) cart.push(item);
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                setTimeout(() => {
+                    document.getElementById('topmenu_icon--bag').classList.add('show');
+                    updateQuantity();
+                    setTimeout(() => {
+                        document.getElementById('topmenu_icon--bag').classList.remove('show');
+                    }, 700);
+                }, 1100);
+            })
+        }
+
+
+        //ORDERHISTORY
+        // const orders = 'orders';
+        // localStorage.setItem(orders, JSON.stringify(ordersList));
+
+        // function displayOrders() {
+        //     const ordersTable = document.getElementById('orders-table-body');
+
+        //     ordersTable.innerHTML = '';
+
+        //     const orderData = JSON.parse(localStorage.getItem('orders')) || [];
+
+        //     orderData.forEach(order => {
+        //         const row = document.createElement('tr');
+
+        //         let itemsTotal = 0;
+        //         order.items.forEach(item => {
+        //             itemsTotal += item.price * item.quantity;
+        //         });
+
+        //         row.innerHTML = `
+        //             <td>${order.orderId}</td>
+        //             <td>${order.orderDate}</td>
+        //             <td>${order.items.length}</td>
+        //             <td>${order.status}</td>
+        //             <td>${order.shippingAddress}</td>
+        //             <td>
+        //                 ${order.items.map(item => {
+        //                     return `<div>${item.name}: ${item.price} x ${item.quantity} = ${item.price * item.quantity}</div>`;
+        //                 }).join('')}
+        //             </td>
+        //             <td>${itemsTotal}</td>
+        //         `;
+
+        //         ordersTable.appendChild(row);
+        //     });
+        // }
+
+        // document.addEventListener('DOMContentLoaded', displayOrders);
+        window.onload = function () {
+            startAnimation();
+            setUpData();
+            phantrang(productList, itemsPerPage);
+            Exit(0, displayTableDetail);
+            displayProductDetailTable();
+            updateQuantity();
+            // displayOrders();
+        };
+
+    </script>
+</body>
+
+</html>

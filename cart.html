@@ -1,0 +1,370 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div id="topmenu">
+        <div id="topmenu_text">
+            ONLY.FANS
+        </div>
+        <div id="topmenu_list">
+            <div id="topmenu_list_item">
+                <div onclick="window.location.href='index.html'">Trang Chủ</div>
+                <div>Liên Hệ</div>
+                <div>Cửa Hàng</div>
+                <div>Giới Thiệu</div>
+                <div>Lịch Sử Đặt Hàng</div>
+            </div>
+        </div>
+        <div id="topmenu_icon">
+            <div id="topmenu_icon--bar"><i class="fa-solid fa-bars-staggered" onclick="hien('bar_wrap');"></i></div>
+            <div id="topmenu_icon--gear"><i class="fa-solid fa-gear"></i></div>
+            <div id="topmenu_icon--user"><i class="fa-regular fa-user"></i></div>
+            <div id="topmenu_icon--find"><i class="fa-solid fa-magnifying-glass" onclick="hien('find_wrap');"></i></div>
+            <div id="topmenu_icon--bag">
+                <i class="fa-solid fa-bag-shopping" onclick="window.location.href='cart.html'"></i>
+                <p id="item-quantity"></p>
+            </div>
+        </div>
+    </div>
+    <div id="bar_wrap">
+        <div id="bar">
+            <div id="bar_text">
+                MENU
+            </div>
+            <div id="bar_list">
+                <ul>
+                    <li onclick="window.location.href='index.html'">Trang Chủ</li>
+                    <li>Liên Hệ</li>
+                    <li>Cửa Hàng</li>
+                    <li>Giới Thiệu</li>
+                    <li>Lịch Sử Đặt Hàng</li>
+                </ul>
+            </div>
+            <div id="bar_bottom">
+                Liên Hệ: 0987654321
+            </div>
+        </div>
+    </div>
+    <div
+        style="margin: 10px 0 0 100px; border-bottom: 5px solid black; display: inline-block; padding-bottom: 4px; font-size: 32px;">
+        Giỏ hàng
+    </div>
+    <div id="payment-method">
+        <div id="payment-method-popup">
+            <div style="position: relative; padding: 10px; border-bottom: 1px black solid; background-color: #0d5146;">
+                <p style="text-align: center; font-size: 18px; color: white;"><strong>THÔNG TIN THẺ</strong></p>
+                <i class="fa-solid fa-xmark" id="close-payment-popup" onclick="DongPopUpThanhtoan()"></i>
+            </div>
+            <div style="width: 80%; margin: 14px auto;">
+                <form action="" id="payment-form">
+                    <div style="padding-top: 4px;">
+                        <p style="text-align: center;">THÔNG TIN CÁ NHÂN</p>
+                        <div style="display: flex; width: 100%;">
+                            <div class="payment-input" style="margin-right: 10px;">
+                                <label for="firstname">Họ</label>
+                                <input type="text" name="firstname" id="firstname" class="" placeholder="Hồ"
+                                    oninput="checkName(this)">
+                            </div>
+                            <div class="payment-input">
+                                <label for="lastname">Tên</label>
+                                <input type="text" name="lastname" id="lastname" placeholder="Hoàng Long"
+                                    oninput="checkName(this)">
+                            </div>
+                        </div>
+                        <div class="payment-input">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" id="email" placeholder="hohoanglong@gmail.com"
+                                oninput="checkEmail(this)">
+                        </div>
+                        <div class="payment-input">
+                            <label for="diachi">Địa chỉ:</label>
+                            <input type="text" name="diachi" id="diachi" placeholder="273 An Dương Vương Quận 5 TP.HCM"
+                                oninput="checkInput(this)">
+                        </div>
+                    </div>
+                    <div style="padding-top: 20px;">
+                        <p style="text-align: center;">THÔNG TIN TÀI KHOẢN</p>
+                        <div style="display: flex; width: 100%;">
+                            <div class="payment-input" style="margin-right: 10px; flex: 7;">
+                                <label for="sothe">Số thẻ</label>
+                                <input type="text" name="sothe" id="sothe" placeholder="XXXX - XXXX - XXXX - XXXX"
+                                    maxlength="19" oninput="DinhDangSoThe(this)">
+                            </div>
+                            <div class="payment-input" style="flex: 1;">
+                                <label for="ccv">CVC</label>
+                                <input type="password" name="ccv" id="ccv" placeholder="XXX" maxlength="3"
+                                    oninput="checknumber(this)">
+                            </div>
+                        </div>
+                        <div style="display: flex; width: 100%;">
+                            <div class="payment-input" style="margin-right: 10px; flex: 1;">
+                                <label for="hanthe">Hạn thẻ</label>
+                                <input type="text" name="hanthe" id="hanthe" placeholder="MM / YY" maxlength="5"
+                                    oninput="DinhDangNgay(this)">
+                            </div>
+                            <div class="payment-input" style="flex: 1;">
+                                <label for="zipcode">Mã ZIP</label>
+                                <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX" maxlength="5"
+                                    oninput="checknumber(this)">
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <div id="payment-btn"> -->
+                    <button id="payment-btn" type="submit">HOÀN TẤT</button>
+                    <!-- </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="toast">
+        <div style="text-align: center; font-size: 20px; margin-top: 10px; font-weight: 700;">Thông báo</div>
+        <div id="toast-msg" style="margin-top: 20px; text-align: center;"></div>
+    </div>
+    <div id="cart">
+        <div class="left">
+            <div id="empty-cart" style="display: none; margin: 100px auto; width: max-content; user-select: none;">
+                <div style="width: max-content; margin: 10px auto;">
+                    <i class="fa-solid fa-cart-shopping fa-5x"></i>
+                </div>
+                <p style="text-align: center;">
+                    Giỏ hàng của bạn đang trống
+                </p>
+            </div>
+            <div class="container">
+                <table>
+                    <tbody id="cart-container">
+                        <!-- <tr>
+                            <th></th>
+                            <th>Tên sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                            <th></th>
+                        </tr> -->
+                        <!-- <tr class="cart-item">
+                            <td style="display: none;">msp1</td>
+                            <td><img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="" style="height: 55px;"></td>
+                            <td>
+                                Quạt máy senko
+                            </td>
+                            <td>
+                                <p class="item-price">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div id="chinhsoluong">
+                                    <button style="color: gray;" class="decrease">
+                                        -
+                                    </button>
+                                    <p class="quantity">1</p>
+                                    <button class="increase">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="item-total">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div class="xoa">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="cart-item">
+                            <td style="display: none;">msp2</td>
+                            <td><img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="" style="height: 55px;"></td>
+                            <td>
+                                Quạt máy senko
+                            </td>
+                            <td>
+                                <p class="item-price">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div id="chinhsoluong">
+                                    <button style="color: gray;" class="decrease">
+                                        -
+                                    </button>
+                                    <p class="quantity">1</p>
+                                    <button class="increase">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="item-total">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div class="xoa">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="cart-item">
+                            <td style="display: none;">msp3</td>
+                            <td><img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="" style="height: 55px;"></td>
+                            <td>
+                                Quạt máy senko
+                            </td>
+                            <td>
+                                <p class="item-price">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div id="chinhsoluong">
+                                    <button style="color: gray;" class="decrease">
+                                        -
+                                    </button>
+                                    <p class="quantity">1</p>
+                                    <button class="increase">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="item-total">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div class="xoa">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="cart-item">
+                            <td style="display: none;">msp4</td>
+                            <td><img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="" style="height: 55px;"></td>
+                            <td>
+                                Quạt máy senko
+                            </td>
+                            <td>
+                                <p class="item-price">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div id="chinhsoluong">
+                                    <button style="color: gray;" class="decrease">
+                                        -
+                                    </button>
+                                    <p class="quantity">1</p>
+                                    <button class="increase">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="item-total">
+                                    200.000 VNĐ
+                                </p>
+                            </td>
+                            <td>
+                                <div class="xoa">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="right">
+            <div class="container">
+                <div
+                    style="border-bottom: 1px black solid; text-align: center; padding: 14px; font-size: 18px; font-weight: 600;">
+                    HÓA ĐƠN
+                </div>
+                <div id="info">
+                    <p>Họ và tên: Hồ Hoàng Long</p>
+                    <p>Địa chỉ: hihihihi</p>
+                    <p>SĐT: hihihi</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; width: 90%; margin: 0 auto;">
+                    <div>
+                        <p>
+                            TỔNG CỘNG:
+                        </p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p id="total-price" style="font-size: 1.2rem;">0 VNĐ</p>
+                        <p style="font-size: 13px; font-weight: 100; color: grey;">(Đã bao gồm VAT nếu có)</p>
+                    </div>
+                </div>
+                <div style="width: 90%; margin: 12 auto;">
+                    <button
+                        style="background-color: #0d5146; width: 100%; padding: 6px; font-weight: 700; color: white; cursor: pointer;"
+                        id="ThanhToanbtn" onclick="ThanhToan()">THANH
+                        TOÁN</button>
+                </div>
+                <div id="payment">
+                    <i class=" fa-brands fa-cc-visa fa-xl payment-icon" onclick="MoPopUpThanhtoan(this)"></i>
+                    <i class="fa-brands fa-cc-mastercard fa-xl payment-icon" onclick="MoPopUpThanhtoan(this)"></i>
+                    <i class="fa-regular fa-credit-card fa-xl payment-icon" onclick="MoPopUpThanhtoan(this)"></i>
+                    <i class="fa-solid fa-money-bill-1-wave payment-icon fa-xl" onclick="MoPopUpThanhtoan(this)"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="information">
+        <h2>Nhận thông tin khuyến mãi mới nhất</h2>
+        <p>Để lại email của bạn để nhận những thông tin khuyến mãi mới nhất từ chúng tôi</p>
+        <div id="input-information">
+            <input type="email" name="email-info" id="email-info" placeholder="Email của bạn">
+            <button onclick="checkEmailkhuyenmai()" id="emailkhuyenmai">
+                <i class="fa-solid fa-arrow-right" style="color: white;"></i>
+            </button>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer-container">
+            <div class="footer-item">
+                <img src="Logo-DH-Sai-Gon-SGU-flat.webp" alt="">
+            </div>
+            <div class="footer-item">
+                <h4>Thông tin hữu ích</h4>
+                <a href="">Kiểm tra size quạt</a>
+                <br>
+                <a href="">Hướng dẫn bảo hành</a>
+                <br>
+                <a href="">Quy định đổi quạt</a>
+            </div>
+            <div class="footer-item">
+                <h4>Giới thiệu</h4>
+                <a href="">Quan niệm về quạt</a>
+                <br>
+                <a href="">Danh sách cửa hàng</a>
+                <br>
+                <a href="">Dành cho đại lý</a>
+            </div>
+            <div class="footer-item">
+                <h4>Thông tin liên hệ</h4>
+                <p>Địa chỉ: 273 An Dương Vương, P3, Quận 5, TP.HCM</p>
+                <p>Số điện thoại: 0912345JQK</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+</body>
+
+</html>
